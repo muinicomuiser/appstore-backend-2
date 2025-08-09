@@ -14,7 +14,7 @@ export class Aplicacion {
   nombre: string;
   precio: number;
   sistemaOperativo: SistemaOperativo;
-  calificacion: number;
+  calificacion: number = 0;
   tamanio: number;
   version: string;
   descargas: number;
@@ -23,7 +23,6 @@ export class Aplicacion {
     nombre: string,
     precio: number,
     sistemaOperativo: SistemaOperativo,
-    calificacion: number,
     tamanio: number,
     version: string,
   ) {
@@ -31,7 +30,6 @@ export class Aplicacion {
     this.nombre = nombre;
     this.precio = precio;
     this.sistemaOperativo = sistemaOperativo;
-    this.calificacion = calificacion;
     this.tamanio = tamanio;
     this.version = version;
     this.descargas = 0;
