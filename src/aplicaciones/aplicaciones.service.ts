@@ -1,15 +1,28 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Aplicacion } from './models/aplicacion.model';
 import { CreateAplicacionDTO } from './dto/create.aplicacion.dto';
-import { UpdateAplicacionDTO } from './dto/update.aplicaicon.dto';
+import { UpdateAplicacionDTO } from './dto/update.aplicacion.dto';
+import { SistemaOperativo } from './enum/sistema_operativo.enum';
 
 @Injectable()
 export class AplicacionesService {
-  aplicaciones: Aplicacion[] = [];
+  aplicaciones: Aplicacion[] = 
+  [
+    new Aplicacion(1, 'PhotoEdit Pro', 2.99, SistemaOperativo.ANDROID, 85.5, '3.4.1'),
+    new Aplicacion(2, 'HealthTracker X', 0.00, SistemaOperativo.IOS, 120.2, '5.0.0'),
+    new Aplicacion(3, 'Nebula Browser', 0.00, SistemaOperativo.ANDROID, 62.1, '1.8.0'),
+    new Aplicacion(4, 'ZenMeditation', 4.99, SistemaOperativo.IOS, 95.8, '2.1.5'),
+    new Aplicacion(5, 'Game Blitz 3D', 0.00, SistemaOperativo.ANDROID, 250.0, '1.0.2'),
+    new Aplicacion(6, 'BudgetFlow', 0.99, SistemaOperativo.IOS, 78.9, '4.0.0'),
+    new Aplicacion(7, 'Star Atlas', 1.99, SistemaOperativo.ANDROID, 155.6, '1.1.0'),
+    new Aplicacion(8, 'Retro Arcade', 0.00, SistemaOperativo.IOS, 180.3, '3.2.1'),
+    new Aplicacion(9, 'SecurePass', 0.00, SistemaOperativo.ANDROID, 45.7, '2.3.0'),
+    new Aplicacion(10, 'Foodie Finder', 2.49, SistemaOperativo.IOS, 110.4, '1.5.8')
+];
 
   crearAplicacion(nuevaAplicacion: CreateAplicacionDTO): Aplicacion {
     const aplicacionCreada: Aplicacion = new Aplicacion(
-      this.aplicaciones.length + 1,
+      this.aplicaciones[this.aplicaciones.length -1].id + 1,
       nuevaAplicacion.nombre,
       nuevaAplicacion.precio,
       nuevaAplicacion.sistemaOperativo,
@@ -30,7 +43,7 @@ export class AplicacionesService {
     throw new NotFoundException('Aplicación no existe');
   }
 
-  obtenerYFiltraTodas(nombre?: string, so?: string): Aplicacion[] {
+  obtenerYFiltrarTodas(nombre?: string, so?: string): Aplicacion[] {
     if (!nombre && !so) {
       return this.aplicaciones;
     } else if (nombre || so) {
@@ -51,7 +64,7 @@ export class AplicacionesService {
   ): Aplicacion {
     const aplicacion = this.aplicaciones.find((app) => app.id == id);
     if (!aplicacion) {
-      throw new NotFoundException('Aplicacion no existe');
+      throw new NotFoundException('Aplicación no existe');
     }
     if (updateAplicacion.precio) {
       aplicacion.precio = updateAplicacion.precio;
@@ -63,6 +76,13 @@ export class AplicacionesService {
       aplicacion.tamanio = updateAplicacion.tamanio;
     }
     return aplicacion;
+  }
+
+  eliminarAplicacion(id: number): void{
+    // Se puede aprovechar el método de "obtenerPorId" para verificar si existe, pues ya envía el error de Not Found si no encuentra coincidencia.
+    this.obtenerPorId(id)
+    const indiceEliminada: number = this.aplicaciones.findIndex(app => app.id == id)
+    this.aplicaciones.splice(indiceEliminada, 1)
   }
 
   // AUXILIAR
