@@ -3,6 +3,7 @@ import { Aplicacion } from './models/aplicacion.model';
 import { CreateAplicacionDTO } from './dto/create.aplicacion.dto';
 import { UpdateAplicacionDTO } from './dto/update.aplicacion.dto';
 import { SistemaOperativo } from './enum/sistema_operativo.enum';
+import { GetUserAplicacionDTO } from './dto/get.user_aplicacion.dto';
 
 @Injectable()
 export class AplicacionesService {
@@ -93,5 +94,15 @@ export class AplicacionesService {
       }
     }
     return undefined;
+  }
+
+  obtenerUserAplicacionDTOPorId(id: number): GetUserAplicacionDTO{
+    const aplicacion = this.obtenerPorId(id)
+    return new GetUserAplicacionDTO(
+      aplicacion.id,
+      aplicacion.nombre,
+      aplicacion.precio,
+      aplicacion.version
+    )
   }
 }
